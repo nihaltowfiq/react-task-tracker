@@ -11,12 +11,6 @@
       "text": "Meeting at School",
       "day": "Feb 5th at 2:30PM",
       "reminder": true
-    },
-    {
-      "id": 3,
-      "text": "Food Shoppong",
-      "day": "Feb 5th at 2:30PM",
-      "reminder": false
     }
   ]
 }
