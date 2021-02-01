@@ -9,7 +9,7 @@
     {
       "text": "Food Shopping",
       "day": "Feb 5th at 2:30PM",
-      "reminder": true,
+      "reminder": false,
       "id": 2
     }
   ]

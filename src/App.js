@@ -11,22 +11,46 @@ function App() {
   const [tasks, setTasks] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:5000/tasks")
-      .then((res) => res.json())
-      .then((data) => setTasks(data));
+    const getTasks = async () => {
+      const tasksFromServer = await fetchTasks();
+      setTasks(tasksFromServer);
+    };
+
+    getTasks();
   }, []);
 
+  // FETCH TASKS FROM SERVER
+  const fetchTasks = async () => {
+    try {
+      const res = await fetch("http://localhost:5000/tasks");
+      const data = await res.json();
+
+      return data;
+    } catch {
+      console.log("Something wrong in server!");
+    }
+  };
+
+  // FETCH TASK FROM SERVER (SINGULAR)
+  const fetchTask = async (id) => {
+    const res = await fetch(`http://localhost:5000/tasks/${id}`);
+    const data = await res.json();
+
+    return data;
+  };
+
   // Add Task
-  const addTask = (task) => {
-    fetch(`http://localhost:5000/tasks`, {
+  const addTask = async (task) => {
+    const res = await fetch(`http://localhost:5000/tasks`, {
       method: "POST",
       headers: {
         "Content-type": "application/json",
       },
       body: JSON.stringify(task),
-    })
-      .then((res) => res.json())
-      .then((data) => setTasks([...tasks, data]));
+    });
+    const data = await res.json();
+
+    setTasks([...tasks, data]);
 
     //BELOW THE CODE IS FOR WITHOUT SERVER: >>
     // const id = Math.floor(Math.random() * 1000) + 1;
@@ -35,18 +59,11 @@ function App() {
   };
 
   // Delete Task
-  const deleteTask = (id) => {
-    fetch(`http://localhost:5000/tasks/${id}`, {
+  const deleteTask = async (id) => {
+    await fetch(`http://localhost:5000/tasks/${id}`, {
       method: "DELETE",
     });
     setTasks(tasks.filter((task) => task.id !== id));
-  };
-
-  const fetchTask = async (id) => {
-    const res = await fetch(`http://localhost:5000/tasks/${id}`);
-    const data = await res.json();
-
-    return data;
   };
 
   // Toggle Reminder
@@ -69,6 +86,7 @@ function App() {
       )
     );
   };
+
   return (
     <Router>
       <div className="container">
